@@ -75,13 +75,18 @@ public class CheckBankClient {
         return bResult;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws 
+            BankCreditHistoryException,
+            ProblemWithLowException {
         System.out.println("Check bank client");
         BankWorker bankWorker = new BankWorker();
         BankClient bankClient = new BankClient();
         Boolean getCregit;
-        getCregit = getCreditForClient(bankWorker, bankClient);
-        
+        try {
+            getCregit = getCreditForClient(bankWorker, bankClient);
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
     }
 
 }
