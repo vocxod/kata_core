@@ -30,15 +30,15 @@ class BankWorker implements BankClerk {
         boolean bResult = false;
         int iTypeReject = 0;        
         try{
-            // int iTrigger = 100500 / iTypeReject;
-            bResult = true;
+            int iTrigger = 100500 / iTypeReject;
         } catch (Exception e){
-            if(iTypeReject == 1){
+            if(iTypeReject == 2){
                 bResult = false;
                 throw new BankCreditHistoryException("Bad history");
-            } else if (iTypeReject == 2){
+            } else if (iTypeReject == 0){
                 bResult = false;
-                throw new ProblemWithLowException("Bad history");
+                // System.out.print("criminal 1");
+                throw new ProblemWithLowException("Criminal");
             }
         } finally {
             // some code probably
@@ -70,6 +70,7 @@ public class CheckBankClient {
             bResult = false;
         } catch (ProblemWithLowException e) {
             // nothing out add info
+            // System.out.print("criminal 2");
             bResult = false;
         }
         return bResult;
@@ -81,11 +82,16 @@ public class CheckBankClient {
         System.out.println("Check bank client");
         BankWorker bankWorker = new BankWorker();
         BankClient bankClient = new BankClient();
-        Boolean getCregit;
+        Boolean getCregit = false;
         try {
             getCregit = getCreditForClient(bankWorker, bankClient);
         } catch (Exception e) {
             System.out.print(e.getMessage());
+        }
+        if (!getCregit){
+            System.out.println("Credit decline");
+        } else {
+            System.out.println("Credit approved!");
         }
     }
 
