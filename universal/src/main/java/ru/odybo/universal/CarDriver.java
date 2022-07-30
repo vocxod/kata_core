@@ -34,9 +34,7 @@ public class CarDriver {
     }
 
     public static void main(String[] args) {
-        try( Car car = new Car()) {
-            car.drive();
-            car.makeNullPointer();
+        try ( Car car = new Car()) {
         } catch (Exception e) {
             // System.out.println("runtime exception");
         }
