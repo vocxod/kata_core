@@ -41,11 +41,6 @@ public class Universal {
     
     public static void main(String[] args) {
         System.out.println("Universal be Infinity!");
-        String str = 'A' + '1' + "2";
-        String str2 = "A" + 12;
-        String str3 = 'A' + "12";
-        System.out.println(str);
-        System.out.println(str2);
-        System.out.println(str3);
+
     }
 }
