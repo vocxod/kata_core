@@ -42,7 +42,7 @@ public class Task_2_4_18 {
     7) Господи боже! еще и с секретным предписаньем!
     * */
 
-    public static String printTextPerRole(String[] roles, String[] textLines) {
+    public static String printTextPerRoleRegExp(String[] roles, String[] textLines) {
         String sResult;
         ArrayList<String> numeratedLines = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
@@ -81,6 +81,29 @@ public class Task_2_4_18 {
         sResult = sb.toString();
         return sResult;
     }
+
+
+    public static String printTextPerRole(String[] roles, String[] textLines) {
+        String sResult;
+        StringBuilder sb = new StringBuilder();
+        int numLine = 1;
+
+        for(String sRole: aRoles){
+            // line number:role:role_text
+            sb.append(sRole + ":" + "\n");
+            for (int jj = 0; jj < textLines.length; jj++) {
+                if (textLines[jj].contains(sRole + ":")) {
+                    numLine = jj + 1;
+                    sb.append(numLine + ")" + textLines[jj].substring(sRole
+                            .length()+1).trim() + "\n");
+                }
+            }
+            sb.append("\n");
+        }
+        sResult = sb.toString();
+        return sResult;
+    }
+
 
     public static void main(String[] args) {
         String sResult;
