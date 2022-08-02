@@ -7,7 +7,7 @@ class CheckInfinity {
     public static void main(String... args) {
 
 
-      float f = 1.0 + 1.0F;
+      float f = 1.0F + 1.0F;
       // f = f + 1.0F;
       /*
       float ff = f / 0;
