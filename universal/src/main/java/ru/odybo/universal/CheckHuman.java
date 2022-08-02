@@ -11,9 +11,12 @@ class Human {
     }
 
     Human(int age, String name, String secondName, String favoriteSport) {
+        /*
         this.age = age;
         this.name = name;
         this.secondName = secondName;
+         */
+        this(age, name, secondName); // try ather constructor
         this.favoriteSport = favoriteSport;
     }
 
@@ -26,10 +29,10 @@ class Human {
 
 
 public class CheckHuman {
-    public static void main(String[] args) {
+    public static void main(String... args) {
         Human personFirst = new Human();
         Human personSecond = new Human(52, "Sergey", "Riabinin", "Chess");
-        Human personThird = new Human(52, "Sergey", "Riabinin");
+        Human personThird = new Human(48, "Sergey", "Riabinin");
     }
 }
 
