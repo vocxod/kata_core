@@ -5,38 +5,56 @@ package ru.odybo.universal;
  * Study))
  * */
 
-class Eye {
-  private String color;
-}
-
-class Leg {
-  private String size;
-}
-
-
 class Animal {
-  public Leg leg;
-  public Eye eye;
+  public String name;
+  public String bodyPart;
+
+  Animal (){
+    System.out.println("I'm boring...");
+  }
+
+  Animal (String bodyPart){
+    this.bodyPart = bodyPart;
+    System.out.println("i'am mutant: " + bodyPart + " with some features!");
+  }
+
+  protected void displayInfo(){
+    System.out.println("I'm animal");
+  }
 }
 
 class Dog extends Animal {
 
-  public Leg getLeg() {
-    return this.leg;
+  public String sound = "HowHow!";
+
+  Dog(){
+    System.out.println("Dog open eyes...");
   }
+
+  @Override
+  public void displayInfo(){
+    // super.displayInfo();
+    // this.sound = sound;
+    System.out.println("I'm DOG " + this.sound);
+  }
+  
 }
 
 class Korgi extends Dog {
 
-  @Override
-  public Leg getLeg(){
-    return this.leg;
+  Korgi(){
+    System.out.println("Korgi says!");
+  }
+  Korgi(String bodyPart){
+    System.out.println("Korgi says!");
   }
 }
+  
 
 public class BehaiveCheckTypeOfReturn {
   public static void main(String... args){
     Korgi korgi = new Korgi();
+    korgi.displayInfo();
   }
 }
 
