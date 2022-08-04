@@ -10,41 +10,49 @@ public class Robot3313 {
         int fromX;
         int fromY;
         int startDirection;
+        int toX;
+        int toY;
+        int iExit;
         Direction fromDirection;
-        System.out.print("From point X: ");
-        fromX = sc.nextInt();
-        System.out.print("From point Y: ");
-        fromY = sc.nextInt();
-        System.out.print("From direction (as Hour: 0 (up) 3(right) 6(down) 9(left)): ");
-        startDirection = sc.nextInt();
-        switch (startDirection) {
-          case 0:
-            fromDirection = Direction.UP;
-            break;
-          case 3:
-            fromDirection = Direction.RIGHT;
-            break;
-          case 6:
-            fromDirection = Direction.DOWN;
-            break;
-          case 9:
-            fromDirection = Direction.LEFT;
-            break;
-          default:
-            fromDirection = Direction.UP;
-        }
 
-        Robot robot = new Robot(fromDirection, 0, 0);
-        
-        System.out.print("Set endpoint X:");
-        int toX = sc.nextInt();
-        System.out.print("Set endpoint Y:");
-        int toY = sc.nextInt();
+        do {
+            System.out.print("From point X: ");
+            fromX = sc.nextInt();
+            System.out.print("From point Y: ");
+            fromY = sc.nextInt();
+            System.out.print("From direction (as Hour: 0 (up) 3(right) 6(down) 9(left)): ");
+            startDirection = sc.nextInt();
+            switch (startDirection) {
+                case 0:
+                    fromDirection = Direction.UP;
+                    break;
+                case 3:
+                    fromDirection = Direction.RIGHT;
+                    break;
+                case 6:
+                    fromDirection = Direction.DOWN;
+                    break;
+                case 9:
+                    fromDirection = Direction.LEFT;
+                    break;
+                default:
+                    fromDirection = Direction.UP;
+            }
 
-        robot.moveRobot(robot, toX, toY);
+            Robot robot = new Robot(fromDirection, fromX, fromY);
 
-        System.out.println("LastX= " + robot.posX);
-        System.out.println("LastY= " + robot.posY);
+            System.out.print("Set endpoint X:");
+            toX = sc.nextInt();
+            System.out.print("Set endpoint Y:");
+            toY = sc.nextInt();
+
+            robot.moveRobot(robot, toX, toY);
+
+            System.out.print("LastX= " + robot.posX);
+            System.out.print(" LastY= " + robot.posY);
+            System.out.print("\n More try? 5 - exit");
+            iExit = sc.nextInt();
+        } while (iExit != 5);
     }
 }
 
@@ -86,91 +94,90 @@ class Robot {
     }
 
     public void moveRobot(Robot robot, int toX, int toY) {
-        System.out.println("Шагаем из " + robot.posX + " : " + robot.posY);
-        System.out.println("Шагаем к " + toX + " : " + toY);
-        Runnable moving;
-        String quant;
+        // System.out.println("Шагаем из " + robot.posX + " : " + robot.posY);
+        // System.out.println("Шагаем к " + toX + " : " + toY);
+        // Runnable moving;
+        // String quant;
 
         // вариант в лоб - разворотом на X и потом на ось Y пока отложим
         // как банальный и неинтересный.
-
-        int deltaX = toX - this.getX();
-        int deltaY = toY - this.getY();
+        // moving to X if needed
+        int xDirection = toX - robot.getX();
+        int yDirection = toY - robot.getY();
+        int deltaX = Math.abs(xDirection);
+        int deltaY = Math.abs(yDirection);
         // @todo for variants
-        int distance = 0; 
-        // deltaX = 1; deltaY = 0;
+        // int distance = 0;
+        // int caseApproach = 1;
         // пока робот не дошел до цели
         System.out.println("\u0394 \u0394 = " + deltaX + ":" + deltaY);
-        while(deltaX) {
-          System.out.println("\u0394 xy = " + deltaX + ":" + deltaY);
-          // ветвим и находим направления, далее ветвим и выставляем допустимое
-          if (deltaX > 0 && deltaY > 0) {
-            // выставить самое короткое направление из текущего - или в UP or RIGHT
-            switch (this.getDirection()) {
-              case UP:
-                // наше направление
-                break;
-              case RIGHT:
-                // наше направление
-                break;
-              case DOWN:
-                robot.turnLeft();
-                break;
-              case LEFT:
-                robot.turnRight();
-                break;
+        while(deltaX > 0 || deltaY > 0) {
+            // System.out.println("\u0394 xy = " + deltaX + ":" + deltaY);
+            /*
+            решаем в лоб - перебираем X в одном цикле и Y в другом
+            only caseApproach = 0
+            */
+            while (deltaX > 0) {
+                if (xDirection == 0) {
+                    // not need X moving
+                    break;
+                }
+                if (xDirection < 0) {
+                    // need X LEFT moving
+                    switch (robot.getDirection()){
+                        case UP -> robot.turnLeft();
+                        case RIGHT -> {robot.turnLeft();robot.turnLeft();}
+                        case DOWN -> robot.turnRight();
+                    }
+                }
+                if (xDirection > 0) {
+                    // need X RIGHT moving
+                    switch (robot.getDirection()) {
+                        case UP -> robot.turnRight();
+                        case DOWN -> robot.turnLeft();
+                        case LEFT -> { robot.turnRight(); robot.turnRight();}
+                    }
+                }
+                robot.stepForward();
+                deltaX = Math.abs(toX - robot.getX());
             }
-          }
-          if (deltaX > 0 && deltaY == 0) {
-            // выставить самое короткое направление из текущего - RIGHT
-            switch (this.getDirection()) {
-              case UP:
-                robot.turnRight();
-                break;
-              case RIGHT:
-                // наше направление
-                break;
-              case DOWN:
-                robot.turnLeft();
-                break;
-              case LEFT:
-                robot.turnRight();
-                robot.turnRight();
-                break;
+
+            // moving to Y if needed
+            while (deltaY > 0) {
+                if (yDirection == 0) {
+                    // not need Y moving
+                    break;
+                }
+                if (yDirection < 0) {
+                    // need Y DOWN moving
+                    switch (robot.getDirection()){
+                        case LEFT -> robot.turnRight();
+                        case RIGHT -> robot.turnLeft();
+                        case UP -> { robot.turnRight(); robot.turnRight(); }
+                    }
+                }
+                if (yDirection > 0) {
+                    // need Y UP moving
+                    switch (robot.getDirection()) {
+                        case DOWN -> { robot.turnRight(); robot.turnRight(); }
+                        case RIGHT -> robot.turnLeft();
+                        case LEFT -> robot.turnRight();
+                    }
+                }
+                robot.stepForward();
+                deltaY = Math.abs(toY - robot.getY());
             }
-          }
-          // вариант 2 - пробуем добиться результата лямбдой
-          robot.stepForward();
-          deltaX = toX - this.getX();
-          deltaY = toY - this.getY();
-          System.out.println("Состояние робота: " + this.getDirection() + " : " + robot.posX + " : " + robot.posY);
-          // break;
+            // in this place we have deltaX and deltaY equals 0 or exceprion result
+            if ( deltaX + deltaY > 0 ) {
+                System.out.println("We have ERROR!");
+                try {
+                    throw new Exception("Unexpected result!");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            break;
         }
-
-        // find direction (Quant) from current position to endpoint.
-        // int toQuant = 0;
-        if (((this.getX() - toX) >= 0) && ((this.getY() - toY) <= 0)) {
-          // Q0
-          // () -> System.out.println("No Parameters"); 
-          String quant1 = "Q0";
-          moving = () -> System.out.println("TO ");
-          moving.run();
-        } else if (((this.getX() - toX) >= 0) && ((this.getY() - toY) >= 0)) {
-          // Q1
-          
-        } else if (((this.getX() - toX) <= 0) && ((this.getY() - toY) <= 0)) {
-          // Q2
-          
-        } else if (((this.getX() - toX) >= 0) && ((this.getY() - toY) <= 0)) {
-          // Q3
-          
-        } else {
-          System.out.println("Error find direction.");
-          System.out.println("DeltaX= " + (this.getX() - toX) + " DeltaY=" + (this.getY() - toY));
-          System.exit(-1); 
-        }     
-
-    
     }
     
     public void turnLeft() {
